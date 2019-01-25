@@ -61,7 +61,24 @@ def calc_dist(para_vec, arr, dis='cosine'):
 def clean(doc):
     doc=re.sub('[^a-zA-Z- ]',' ', doc)
     return doc
-    
+
+#sent = ['a','word','a','a','cat','dog','cat']
+#vocab = {'a':200,'word':400,'cat':800,'dog':800}
+
+def inverse_softmax(vocab, sent):
+    sent = set(sent)
+    denominator =0
+    weights = {}
+    for word in sent:
+        denominator+= np.exp(-vocab[word])
+
+    for word in sent:
+        if word not in weights:
+            weights[word]= np.exp(-vocab[word])/denominator
+        # else:   #theoretical decision to take frequency of word in entire document irrespective of the sentence.
+        #     weights[word]= weights[word]*(np.exp(-1))
+
+    return weights  
 
 
 doc=open('ww2').read()
